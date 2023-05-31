@@ -61,7 +61,7 @@ window.addEventListener("DOMContentLoaded", function () {
         const p = document.createElement("p");
         // const button = document.createElement("button");
 
-        movieData.forEach((a) => {
+        movieData.forEach((a, i) => {
           // console.log(newMovie);
           // console.log(a.title.replace(check, "").toLowerCase());
 
@@ -114,16 +114,15 @@ window.addEventListener("DOMContentLoaded", function () {
             movieList.insertAdjacentHTML("beforeend", tempHtml);
 
             // 영화 설명 더보기 버튼
-            // 더보기 기능 추가하려고 해보았으나 생성된 버튼을 js로 특정 하는것에
+            // 더보기 기능 추가하려고 해보았으나 생성된 버튼을 특정 하는것에
             // 실패하여 jquery로 구현
             // btn = document.querySelectorAll(".card-button");
-            // btn.addEventListener("click", function (e) {
+            // btn[i].addEventListener("click", function (e) {
             //   e.currentTarget.parentElement.innerText = `${a.overview}`;
             // });
 
             // jquery 사용하여 더보기 기능 구현
             btn = $(".card-button");
-
             btn.on("click", function (e) {
               e.currentTarget.parentElement.innerText = `${a.overview}`;
             });
