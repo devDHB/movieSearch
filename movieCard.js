@@ -28,28 +28,33 @@ window.addEventListener("DOMContentLoaded", function () {
       console.log(response.results);
       movieData = response.results;
 
-      // 검색 버튼 클릭
+      // 검색 버튼 클릭 함수
       function movieSubmit(e) {
         e.preventDefault();
 
+        // 카드 리스트 초기화
         movieList.innerHTML = "";
 
+        // 변수에 검색값 저장
         let getMovie = movieInput.value;
-        // 공백제거, 소문자 변환
+        // 공백제거, 소문자 변환하여 movieGet 함수로 파라미터 전달
         if (getMovie.match(check)) {
           getMovie = getMovie.replace(check, "").toLowerCase();
-          movieAdd(getMovie);
+          movieGet(getMovie);
         } else {
           getMovie = getMovie.toLowerCase();
-          movieAdd(getMovie);
+          movieGet(getMovie);
         }
 
+        // 인풋 초기화
         movieInput.value = "";
       }
 
+      // 영화 검색 버튼 이벤트
       movieForm.addEventListener("submit", movieSubmit);
 
-      function movieAdd(getMovie) {
+      // 영화 검색
+      function movieGet(getMovie) {
         // const li = document.createElement("li");
         // const img = document.createElement("img");
         // const h3 = document.createElement("h3");
@@ -83,19 +88,12 @@ window.addEventListener("DOMContentLoaded", function () {
 
             // 영화 설명 길이 체크
             // 영화 설명 텍스트 추가
-            if (a.overview.length > 100) {
-              let content = a.overview.substring(0, 100);
+            if (a.overview.length > 300) {
+              let content = a.overview.substring(0, 300);
               p.innerText = `${content}......`;
             } else {
               p.innerText = `${a.overview}`;
             }
-
-            // 영화 설명 더보기 버튼
-            // document
-            //   .getElementById("card-button")
-            //   .addEventListener("click", function () {
-            //     p.innerText = `${a.overview}`;
-            //   });
 
             // movie card 추가
             let tempHtml = `<li class="movie-card">
@@ -104,20 +102,31 @@ window.addEventListener("DOMContentLoaded", function () {
                                 src="https://image.tmdb.org/t/p/original${a.backdrop_path}"
                                 alt="사진"
                               />
-                              <h3 class="card-title">${a.title}</h3>
+                              <h3 class="card-title">${a.title} (${a.vote_average})</h3>
                               <p class="card-content">${p.innerText}
-                              <span><button id="card-button" onclick="console.log("hi");">더보기</button></span></p>
+                              <button class="card-button"">더보기</button></p>
                             </li>`;
 
-            // document
-            //   .getElementById("card-button")
-            //   .addEventListener("click", function () {
-            //     console.log(p.innerText);
-            //     p.innerText = `${a.overview}`;
-            //   });
+            // foreach 구문안인데도 append 메소드가 한번밖에 실행이 안되어
+            // insertAdjacentHTML 메소드를 사용함
+            // movieList.append(li);
 
             movieList.insertAdjacentHTML("beforeend", tempHtml);
-            // movieList.append(li);
+
+            // 영화 설명 더보기 버튼
+            // 더보기 기능 추가하려고 해보았으나 생성된 버튼을 js로 특정 하는것에
+            // 실패하여 jquery로 구현
+            // btn = document.querySelectorAll(".card-button");
+            // btn.addEventListener("click", function (e) {
+            //   e.currentTarget.parentElement.innerText = `${a.overview}`;
+            // });
+
+            // jquery 사용하여 더보기 기능 구현
+            btn = $(".card-button");
+
+            btn.on("click", function (e) {
+              e.currentTarget.parentElement.innerText = `${a.overview}`;
+            });
           }
         });
       }
